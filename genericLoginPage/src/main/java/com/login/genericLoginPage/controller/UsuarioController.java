@@ -2,6 +2,7 @@ package com.login.genericLoginPage.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +11,7 @@ import com.login.genericLoginPage.entity.Usuario;
 import com.login.genericLoginPage.repositories.UsuarioRepository;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class UsuarioController {
 
 	@Autowired
@@ -26,7 +28,7 @@ public class UsuarioController {
 	}
 	
 	@PostMapping (value = "login")
-	public ResponseEntity<?> login(Usuario user){
+	public ResponseEntity<?> login(@RequestBody Usuario user){
 		
 		Usuario findUser = usuarioRepository.findByEmail(user.getEmail());
 		usuarioRepository.findByEmail(user.getEmail());
