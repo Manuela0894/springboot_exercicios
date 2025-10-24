@@ -7,10 +7,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.login.genericLoginPage.entity.Usuario;
@@ -18,6 +20,7 @@ import com.login.genericLoginPage.repositories.UsuarioRepository;
 
 @RestController
 @CrossOrigin(origins = "*")
+@RequestMapping(value = "usuario")
 public class UsuarioController {
 
 	@Autowired
@@ -25,7 +28,7 @@ public class UsuarioController {
 	
 	
 	//Endpoint
-	@PostMapping(value = "usuario/cadastro")
+	@PostMapping(value = "cadastro")
 	public ResponseEntity<?> saveUser(@RequestBody Usuario user) {
 		Usuario usuario = new Usuario(user.getName(), user.getEmail(), user.getPassword());
 		usuarioRepository.save(usuario);
@@ -61,7 +64,7 @@ public class UsuarioController {
 	}
 	
 	//criação da variável para o método
-	@GetMapping(value = "metodo01")
+	@GetMapping(value = "listagem")
 	public List<Usuario> ListarUsuarios1(){
 	List<Usuario>listaDeUsuario = usuarioRepository.findAll();
 	return listaDeUsuario;
@@ -80,5 +83,24 @@ public class UsuarioController {
 	}
 
 	//O Optional trata os erros uma vez que o id pode ou não ser retornado
+	
+	
+	@DeleteMapping(value ="delete/{id}")
+	public ResponseEntity<?> deleteUsuario(@PathVariable int id) {
+		Optional<Usuario> usuario = usuarioRepository.findById(id);
+		
+		if(usuario.isPresent()) {
+			usuarioRepository.deleteById(id);
+			System.out.println("Usuario com o id " + id + " deletado com sucesso!");
+			return  ResponseEntity.ok("Usuário deletado com sucesso");
+		}else {
+			
+			return ResponseEntity.status(404).body("Usuário não encontrado!");
+		}
+		
+		
+	
+
+	}
 }
 
