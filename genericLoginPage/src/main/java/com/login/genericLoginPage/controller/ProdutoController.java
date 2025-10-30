@@ -64,7 +64,7 @@ public class ProdutoController {
 			}
 		}
 		
-		@PutMapping(value="update")
+		@PutMapping(value="update/{id}")
 		public ResponseEntity<?> atualizarProduto(@PathVariable int id, @RequestBody Produto produto){
 			Optional<Produto> novoProduto = produtoRepository.findById(id);
 			
