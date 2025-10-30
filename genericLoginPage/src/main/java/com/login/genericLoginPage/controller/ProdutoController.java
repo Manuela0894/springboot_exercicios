@@ -36,10 +36,9 @@ public class ProdutoController {
 		}}
 		
 		
-		@GetMapping("listagem")
+		@GetMapping("list")
 		public ResponseEntity<?> buscarTodos(){
 			List<Produto> lista = produtoRepository.findAll();
-		
 				return ResponseEntity.ok(lista);
 	}
 		
@@ -48,7 +47,9 @@ public class ProdutoController {
 		public ResponseEntity<?> criarProduto(@RequestBody Produto produto){
 		Produto novoProduto  = new Produto(
 				produto.getNome(), produto.getPreco(), produto.getQuantidade());
-				return ResponseEntity.ok(novoProduto);}
+				produtoRepository.save(novoProduto);
+				return ResponseEntity.ok(novoProduto);
+		}
 		
 		
 		@DeleteMapping(value="delete/{id}")
@@ -70,6 +71,8 @@ public class ProdutoController {
 			
 			if(novoProduto.isPresent()) {
 				Produto e = novoProduto.get();
+				e.setNome(produto.getNome());
+				e.setPreco(produto.getPreco());
 				e.setQuantidade(produto.getQuantidade());
 				produtoRepository.save(e);
 				return ResponseEntity.ok(novoProduto);
