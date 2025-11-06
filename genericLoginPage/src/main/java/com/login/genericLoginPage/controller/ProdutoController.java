@@ -15,8 +15,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.login.genericLoginPage.dto.ProdutoRequestDto;
 import com.login.genericLoginPage.entity.Produto;
 import com.login.genericLoginPage.repositories.ProdutoRepository;
+
+import jakarta.validation.Valid;
+
+
 
 @RestController
 @RequestMapping(value ="produto")
@@ -44,7 +49,7 @@ public class ProdutoController {
 		
 		
 		@PostMapping("create")
-		public ResponseEntity<?> criarProduto(@RequestBody Produto produto){
+		public ResponseEntity<?> criarProduto(@Valid @RequestBody ProdutoRequestDto produto){
 		Produto novoProduto  = new Produto(
 				produto.getNome(), produto.getPreco(), produto.getQuantidade());
 				produtoRepository.save(novoProduto);
@@ -61,7 +66,7 @@ public class ProdutoController {
 				return ResponseEntity.ok("deletado com sucesso");
 			}else {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND)
-						.body("usuário não encontrado");
+						.body("produto não encontrado");
 			}
 		}
 		
@@ -79,7 +84,7 @@ public class ProdutoController {
 				}	
 			else {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND)
-						.body("usuário não encontrado");
+						.body("produto não encontrado");
 			}
 			}
 			

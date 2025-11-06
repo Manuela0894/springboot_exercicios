@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.login.genericLoginPage.dto.UsuarioRequestDto;
 import com.login.genericLoginPage.entity.Usuario;
 import com.login.genericLoginPage.repositories.UsuarioRepository;
+
+import jakarta.validation.Valid;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -29,11 +32,11 @@ public class UsuarioController {
 	
 	//Endpoint
 	@PostMapping(value = "cadastro")
-	public ResponseEntity<?> saveUser(@RequestBody Usuario user) {
+	public ResponseEntity<?> saveUser(@Valid @RequestBody UsuarioRequestDto user) {
 		Usuario usuario = new Usuario(user.getName(), user.getEmail(), user.getPassword());
 		usuarioRepository.save(usuario);
 		System.out.println("Usuário salvo com sucesso!");
-		return ResponseEntity.ok("Salvo com sucesso");
+		return ResponseEntity.ok("Salvo com sucesso ");
 	}
 	
 	// adicionar: se ususario ja esta cadastrado e tenta dnv: "faça o login" e vice versa
