@@ -5,17 +5,22 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.login.genericLoginPage.dto.ProdutoResponseDto;
 import com.login.genericLoginPage.dto.UsuarioRequestDto;
+import com.login.genericLoginPage.dto.UsuarioResponseDto;
+import com.login.genericLoginPage.entity.Produto;
 import com.login.genericLoginPage.entity.Usuario;
 import com.login.genericLoginPage.repositories.UsuarioRepository;
 
@@ -36,7 +41,7 @@ public class UsuarioController {
 		Usuario usuario = new Usuario(user.getName(), user.getEmail(), user.getPassword());
 		usuarioRepository.save(usuario);
 		System.out.println("Usuário salvo com sucesso!");
-		return ResponseEntity.ok("Salvo com sucesso ");
+		return ResponseEntity.ok(user);
 	}
 	
 	// adicionar: se ususario ja esta cadastrado e tenta dnv: "faça o login" e vice versa
@@ -66,24 +71,41 @@ public class UsuarioController {
 		
 	}
 	
-	//criação da variável para o método
-	@GetMapping(value = "listagem")
-	public List<Usuario> ListarUsuarios1(){
-	List<Usuario>listaDeUsuario = usuarioRepository.findAll();
-	return listaDeUsuario;
-	}
+//	//criação da variável para o método
+//	@GetMapping(value = "listagem")
+//	public List<Usuario> ListarUsuarios1(){
+//	List<Usuario>listaDeUsuario = usuarioRepository.findAll();
+//	return listaDeUsuario;
+//	}
 	
-	//sem criação de variável
-	@GetMapping(value = "metodo02")
-	public List<Usuario> ListarUsuarios(){
-	return usuarioRepository.findAll();
-	}
 	
+	
+		@GetMapping(value = "listagem")
+		public List<UsuarioResponseDto> ListarUsuarios(){
+		List<Usuario> usuarios = usuarioRepository.findAll();
+		List<UsuarioResponseDto> listarUsuarios = usuarios.stream().map(UsuarioResponseDto::new).toList();
+		return listarUsuarios;           
+		}
+	
+	
+//	//sem criação de variável
+//	@GetMapping(value = "metodo02")
+//	public List<Usuario> ListarUsuarios(){
+//	return usuarioRepository.findAll();
+//	}
+//	
 	
 	@GetMapping(value = "{id}")
-	public Optional<Usuario> usuarioPorId(@PathVariable int id){
-	return usuarioRepository.findById(id);
-	}
+	public ResponseEntity<?> buscarId(@PathVariable int id){
+		Optional<Usuario> usuario = usuarioRepository.findById(id);
+		
+		if(usuario.isPresent()) {
+			UsuarioResponseDto usuarioResearch = new UsuarioResponseDto(usuario.get());
+			return ResponseEntity.status(HttpStatus.OK).body(usuarioResearch);
+		}else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado");
+		}}
+	
 
 	//O Optional trata os erros uma vez que o id pode ou não ser retornado
 	
@@ -100,10 +122,26 @@ public class UsuarioController {
 			
 			return ResponseEntity.status(404).body("Usuário não encontrado!");
 		}
-		
-		
-	
 
 	}
+	
+	@PutMapping(value="update/{id}")
+	public ResponseEntity<?> atualizarUsuario(@PathVariable int id, @RequestBody Usuario user){
+		Optional<Usuario> novoUsuario = usuarioRepository.findById(id);
+		
+		if(novoUsuario.isPresent()) {
+			Usuario e = novoUsuario.get();
+			e.setName(user.getName());
+			e.setEmail(user.getEmail());
+			e.setPassword(user.getPassword());
+			usuarioRepository.save(e);
+			return ResponseEntity.ok(novoUsuario);
+			}	
+		else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body("produto não encontrado");
+		}
+		}
+	
 }
 

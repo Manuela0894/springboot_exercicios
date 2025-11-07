@@ -1,4 +1,4 @@
-package com.login.genericLoginPage.controller;
+ package com.login.genericLoginPage.controller;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.login.genericLoginPage.dto.ProdutoRequestDto;
+import com.login.genericLoginPage.dto.ProdutoResponseDto;
 import com.login.genericLoginPage.entity.Produto;
 import com.login.genericLoginPage.repositories.ProdutoRepository;
 
@@ -35,16 +36,18 @@ public class ProdutoController {
 		Optional<Produto> produto = produtoRepository.findById(id);
 		
 		if(produto.isPresent()) {
-			return ResponseEntity.ok(produto);
+			ProdutoResponseDto produtoResearch = new ProdutoResponseDto(produto.get());
+			return ResponseEntity.status(HttpStatus.OK).body(produtoResearch);
 		}else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("usuário não encontrado");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado");
 		}}
 		
 		
 		@GetMapping("list")
-		public ResponseEntity<?> buscarTodos(){
-			List<Produto> lista = produtoRepository.findAll();
-				return ResponseEntity.ok(lista);
+		public List<ProdutoResponseDto> buscarProdutos(){
+			List<Produto> produtos = produtoRepository.findAll();
+			List<ProdutoResponseDto> listarProdutos = produtos.stream().map(ProdutoResponseDto::new).toList();
+				return listarProdutos;
 	}
 		
 		
