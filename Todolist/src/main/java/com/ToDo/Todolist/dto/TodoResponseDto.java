@@ -1,19 +1,24 @@
 package com.ToDo.Todolist.dto;
 
 import com.ToDo.Todolist.entities.TodoList;
+import com.ToDo.Todolist.entities.enums.EPriority;
+
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 
 public class TodoResponseDto {
 
 	private String name;
 	private String description;
 	private boolean status;
-	private int priority;
+	@Enumerated(EnumType.STRING)
+	private EPriority priority;
 	
 	public TodoResponseDto(TodoList todo) {
 		this.name = todo.getName();
 		this.description = todo.getDescription();
 		this.status = todo.isStatus();
-		this.priority = todo.getPriorty();
+		this.priority = todo.getPriority();
 	}
 
 	public String getName() {
@@ -40,11 +45,11 @@ public class TodoResponseDto {
 		this.status = status;
 	}
 
-	public int getPriority() {
+	public EPriority getPriority() {
 		return priority;
 	}
 
-	public void setPriority(int priority) {
+	public void setPriority(EPriority priority) {
 		this.priority = priority;
 	}	
 	

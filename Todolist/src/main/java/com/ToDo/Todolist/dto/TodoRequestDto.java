@@ -1,4 +1,8 @@
 package com.ToDo.Todolist.dto;
+import com.ToDo.Todolist.entities.enums.EPriority;
+
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -9,11 +13,12 @@ public class TodoRequestDto {
 	@Size( max = 300, message = "A senha deve ter entre 6 e 20 caracteres")
 	private String description;
 	private boolean status;
-	private int priority;
+	@Enumerated(EnumType.STRING)
+	private EPriority priority;
 	
 	public TodoRequestDto() {}
 
-	public TodoRequestDto(String name, String description, boolean status, int priority) {
+	public TodoRequestDto(String name, String description, boolean status, EPriority priority) {
 		this.name = name;
 		this.description = description;
 		this.status = status;
@@ -44,11 +49,11 @@ public class TodoRequestDto {
 		this.status = status;
 	}
 
-	public int getPriority() {
+	public EPriority getPriority() {
 		return priority;
 	}
 
-	public void setPriority(int priority) {
+	public void setPriority(EPriority priority) {
 		this.priority = priority;
 	}
 	

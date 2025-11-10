@@ -83,7 +83,6 @@ public class UsuarioController {
 //	}
 	
 	
-	
 		@GetMapping(value = "listagem")
 		public List<UsuarioResponseDto> ListarUsuarios(){
 		List<Usuario> usuarios = usuarioRepository.findAll();

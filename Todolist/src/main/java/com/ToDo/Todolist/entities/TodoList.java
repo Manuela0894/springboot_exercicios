@@ -1,6 +1,10 @@
 package com.ToDo.Todolist.entities;
 
+import com.ToDo.Todolist.entities.enums.EPriority;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,8 +19,17 @@ public class TodoList {
 	private String name;
 	private String description;
 	private boolean status;
-	private int priority;
+	@Enumerated(EnumType.STRING)
+	private EPriority priority;
 	
+	public TodoList() {}
+	
+	public TodoList(String name, String description, boolean status, EPriority priority) {
+		this.name = name;
+		this.description = description;
+		this.status = status;
+		this.priority = priority;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -41,11 +54,11 @@ public class TodoList {
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
-	public int getPriorty() {
+	public EPriority getPriority() {
 		return priority;
 	}
-	public void setPriorty(int priorty) {
-		this.priority = priorty;
+	public void setPriority(EPriority priority) {
+		this.priority = priority;
 	}
 		
 }
