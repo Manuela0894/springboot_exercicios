@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.login.genericLoginPage.dto.ProdutoRequestDto;
 import com.login.genericLoginPage.dto.ProdutoResponseDto;
+import com.login.genericLoginPage.dto.UsuarioResponseDto;
 import com.login.genericLoginPage.entity.Produto;
 import com.login.genericLoginPage.repositories.ProdutoRepository;
 
@@ -40,7 +41,8 @@ public class ProdutoController {
 			return ResponseEntity.status(HttpStatus.OK).body(produtoResearch);
 		}else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Produto não encontrado");
-		}}
+			}
+		}
 		
 		
 		@GetMapping("list")
@@ -56,9 +58,12 @@ public class ProdutoController {
 		Produto novoProduto  = new Produto(
 				produto.getNome(), produto.getPreco(), produto.getQuantidade());
 				produtoRepository.save(novoProduto);
-				return ResponseEntity.ok(novoProduto);
-		}
-		
+				
+				ProdutoResponseDto responseProduto = new ProdutoResponseDto(novoProduto);
+				  
+				return ResponseEntity.ok(responseProduto);
+				
+			}
 		
 		@DeleteMapping(value="delete/{id}")
 		public ResponseEntity<?> deletarId(@PathVariable int id){
@@ -70,8 +75,8 @@ public class ProdutoController {
 			}else {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND)
 						.body("produto não encontrado");
+				}
 			}
-		}
 		
 		@PutMapping(value="update/{id}")
 		public ResponseEntity<?> atualizarProduto(@PathVariable int id, @RequestBody Produto produto){
@@ -88,8 +93,6 @@ public class ProdutoController {
 			else {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND)
 						.body("produto não encontrado");
-			}
-			}
-			
-	
+		}
+	}
 }

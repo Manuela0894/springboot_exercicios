@@ -41,7 +41,11 @@ public class UsuarioController {
 		Usuario usuario = new Usuario(user.getName(), user.getEmail(), user.getPassword());
 		usuarioRepository.save(usuario);
 		System.out.println("Usuário salvo com sucesso!");
-		return ResponseEntity.ok(user);
+		
+		UsuarioResponseDto responseUsuario = new UsuarioResponseDto(usuario);
+	  
+	    return ResponseEntity.ok(responseUsuario);
+		
 	}
 	
 	// adicionar: se ususario ja esta cadastrado e tenta dnv: "faça o login" e vice versa
