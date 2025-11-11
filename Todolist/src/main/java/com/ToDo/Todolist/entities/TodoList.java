@@ -2,6 +2,7 @@ package com.ToDo.Todolist.entities;
 
 import com.ToDo.Todolist.entities.enums.EPriority;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -20,16 +21,20 @@ public class TodoList {
 	private String description;
 	private boolean status;
 	@Enumerated(EnumType.STRING)
+	@Column(nullable = true)
 	private EPriority priority;
+	
+	//APLICAR O ORDER PARA DRAG E DROP
+	private int listOrder;
 	
 	public TodoList() {}
 	
-	public TodoList(String name, String description, boolean status, EPriority priority) {
+	public TodoList(String name, String description, boolean status, EPriority priority,int listOrder) {
 		this.name = name;
 		this.description = description;
 		this.status = status;
 		this.priority = priority;
-	}
+		this.listOrder = listOrder;}
 	public Long getId() {
 		return id;
 	}
@@ -60,5 +65,15 @@ public class TodoList {
 	public void setPriority(EPriority priority) {
 		this.priority = priority;
 	}
+
+	public int getListOrder() {
+		return listOrder;
+	}
+
+	public void setListOrder(int listOrder) {
+		this.listOrder = listOrder;
+	}
+	
+	
 		
 }

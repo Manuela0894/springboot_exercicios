@@ -13,12 +13,22 @@ public class TodoResponseDto {
 	private boolean status;
 	@Enumerated(EnumType.STRING)
 	private EPriority priority;
+	private int listOrder;
 	
 	public TodoResponseDto(TodoList todo) {
 		this.name = todo.getName();
 		this.description = todo.getDescription();
 		this.status = todo.isStatus();
 		this.priority = todo.getPriority();
+		this.listOrder = todo.getListOrder();
+	}
+
+	public int getListOrder() {
+		return listOrder;
+	}
+
+	public void setListOrder(int listOrder) {
+		this.listOrder = listOrder;
 	}
 
 	public String getName() {

@@ -15,14 +15,24 @@ public class TodoRequestDto {
 	private boolean status;
 	@Enumerated(EnumType.STRING)
 	private EPriority priority;
+	private int listOrder;
 	
 	public TodoRequestDto() {}
 
-	public TodoRequestDto(String name, String description, boolean status, EPriority priority) {
+	public TodoRequestDto(String name, String description, boolean status, EPriority priority, int listOrder) {
 		this.name = name;
 		this.description = description;
 		this.status = status;
 		this.priority = priority;
+		this.listOrder = listOrder;
+	}
+
+	public int getListOrder() {
+		return listOrder;
+	}
+
+	public void setListOrder(int listOrder) {
+		this.listOrder = listOrder;
 	}
 
 	public String getName() {
